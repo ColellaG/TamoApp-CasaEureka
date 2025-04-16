@@ -1,0 +1,34 @@
+<div class="menu-container">
+  <div class="menu-header">
+    <h1>Eureka Menu</h1>
+    <button class="menu-type-toggle" (click)="toggleMenuType()">
+      Cambiar a: {{ selectedMenuType === 'cafeteria' ? 'Cena' : 'Cafetería' }}
+    </button>
+  </div>
+
+  <div class="menu-content" *ngIf="currentMenu">
+    <h2>{{ currentMenu.name }}</h2>
+    
+    <div class="categories">
+      <div class="category" *ngFor="let category of currentMenu.categories">
+        <button 
+          class="category-button" 
+          [class.expanded]="isCategoryExpanded(category.id)"
+          (click)="toggleCategory(category.id)">
+          {{ category.name }}
+          <span class="arrow">{{ isCategoryExpanded(category.id) ? '▼' : '▶' }}</span>
+        </button>
+        
+        <div class="category-items" *ngIf="isCategoryExpanded(category.id)">
+          <div class="menu-item" *ngFor="let item of category.items">
+            <div class="item-header">
+              <h3>{{ item.name }}</h3>
+              <span class="price">${{ item.price.toFixed(2) }}</span>
+            </div>
+            <p class="description">{{ item.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
