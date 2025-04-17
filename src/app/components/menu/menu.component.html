@@ -1,31 +1,67 @@
 <div class="menu-container">
   <div class="menu-header">
-    <h1>Eureka Menu</h1>
-    <button class="menu-type-toggle" (click)="toggleMenuType()">
-      Cambiar a: {{ selectedMenuType === 'cafeteria' ? 'Cena' : 'Cafetería' }}
-    </button>
+    <h1 class="title is-1 has-text-centered">Casa Eureka</h1>
   </div>
-
-  <div class="menu-content" *ngIf="currentMenu">
-    <h2>{{ currentMenu.name }}</h2>
-    
-    <div class="categories">
-      <div class="category" *ngFor="let category of currentMenu.categories">
-        <button 
-          class="category-button" 
-          [class.expanded]="isCategoryExpanded(category.id)"
-          (click)="toggleCategory(category.id)">
-          {{ category.name }}
-          <span class="arrow">{{ isCategoryExpanded(category.id) ? '▼' : '▶' }}</span>
+  
+  <div class="menu-background">
+    <div class="menu-toggle-container">
+      <div class="menu-toggle-buttons">
+        <button class="button menu-toggle-button" 
+                [class.is-active]="selectedMenuType === 'cafeteria'"
+                (click)="setMenuType('cafeteria')">
+          Cafetería
         </button>
-        
-        <div class="category-items" *ngIf="isCategoryExpanded(category.id)">
-          <div class="menu-item" *ngFor="let item of category.items">
-            <div class="item-header">
-              <h3>{{ item.name }}</h3>
-              <span class="price">${{ item.price.toFixed(2) }}</span>
+        <button class="button menu-toggle-button" 
+                [class.is-active]="selectedMenuType === 'cena'"
+                (click)="setMenuType('cena')">
+          Cena
+        </button>
+      </div>
+    </div>
+
+    <div class="menu-content" *ngIf="currentMenu">
+      <h2 class="title is-2 has-text-centered">{{ currentMenu.name }}</h2>
+      
+      <div class="columns is-multiline">
+        <div class="column is-12" *ngFor="let category of currentMenu.categories">
+          <div class="card">
+            <header class="card-header" (click)="toggleCategory(category.id)">
+              <p class="card-header-title">
+                {{ category.name }}
+                <span class="icon">
+                  <i class="fas" [class.fa-chevron-down]="isCategoryExpanded(category.id)" 
+                     [class.fa-chevron-right]="!isCategoryExpanded(category.id)"></i>
+                </span>
+              </p>
+            </header>
+            
+            <div class="card-content" *ngIf="isCategoryExpanded(category.id)">
+              <div class="columns is-multiline">
+                <div class="column is-6" *ngFor="let item of category.items">
+                  <div class="card menu-item">
+                    <div class="card-content">
+                      <div class="level">
+                        <div class="level-left">
+                          <div class="level-item">
+                            <div>
+                              <p class="title is-4">{{ item.name }}</p>
+                              <p class="subtitle is-6">{{ item.description }}</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="level-right">
+                          <div class="level-item">
+                            <div class="price-container">
+                              <p class="price">${{ item.price.toFixed(2) }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p class="description">{{ item.description }}</p>
           </div>
         </div>
       </div>
